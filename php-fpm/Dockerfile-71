@@ -137,7 +137,7 @@ RUN if [ ${INSTALL_MONGO} = true ]; then \
 # ZipArchive:
 #####################################
 
-ARG INSTALL_ZIP_ARCHIVE=false
+ARG INSTALL_ZIP_ARCHIVE=true
 RUN if [ ${INSTALL_ZIP_ARCHIVE} = true ]; then \
     # Install the zip extension
     docker-php-ext-install zip \

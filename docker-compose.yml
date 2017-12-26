@@ -6,6 +6,8 @@ services:
 
     applications:
       image: tianon/true
+      volumes:
+        - ${APPLICATION}:/var/www
 
 ### Workspace Utilities Container ###########################
 
@@ -54,6 +56,8 @@ services:
         - applications
       extra_hosts:
         - "dockerhost:${DOCKER_HOST_IP}"
+        - "statemachine.loc:${DOCKER_HOST_IP}"
+        - "bot2.loc:${WEBSERVER_IP}"
       ports:
         - "${WORKSPACE_SSH_PORT}:22"
       tty: true
@@ -96,10 +100,13 @@ services:
         - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       expose:
         - "9000"
+        - "9001"
       depends_on:
         - workspace
       extra_hosts:
         - "dockerhost:${DOCKER_HOST_IP}"
+        - "statemachine.loc:${DOCKER_HOST_IP}"
+        - "bot2.loc:${WEBSERVER_IP}"
       environment:
         - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
       networks:
@@ -269,7 +276,7 @@ services:
     mariadb:
       build: ./mariadb
       volumes:
-        - ${DATA_SAVE_PATH}/mariadb:/var/lib/mysql
+        - ${DATA_SAVE_PATH}/mariadb:/var/lib/mysql 
         - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
       ports:
         - "${MARIADB_PORT}:3306"
@@ -330,7 +337,7 @@ services:
     mongo:
       build: ./mongo
       ports:
-        - "${MONGODB_PORT}:27017"
+        - "27017:27017"
       volumes:
         - ${DATA_SAVE_PATH}/mongo:/data/db
       networks:
@@ -503,6 +510,7 @@ services:
       environment:
         - cluster.name=laradock-cluster
         - bootstrap.memory_lock=true
+        - xpack.security.enabled=false
         - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
       ulimits:
         memlock:

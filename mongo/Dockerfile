@@ -2,11 +2,12 @@ FROM mongo:latest
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
-#COPY mongo.conf /usr/local/etc/mongo/mongo.conf
+ADD mongodb.conf /etc/mongodb.conf
+ADD run.sh /run.sh
 
 VOLUME /data/db /data/configdb
 
-CMD ["mongod"]
+CMD ["/run.sh"]
 
 EXPOSE 27017
 
