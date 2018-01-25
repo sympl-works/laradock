@@ -119,7 +119,6 @@ USER laradock
 ARG COMPOSER_GLOBAL_INSTALL=false
 ENV COMPOSER_GLOBAL_INSTALL ${COMPOSER_GLOBAL_INSTALL}
 RUN if [ ${COMPOSER_GLOBAL_INSTALL} = true ]; then \
-    # run the install
     composer global install \
 ;fi
 
